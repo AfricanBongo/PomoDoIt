@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PomoDoIt</string>
+
+    <!-- Statements. -->
+    <string name="splash_statement">Your minimalist pomodoro timer</string>
+
+    <!-- Content descriptions.. -->
+    <string name="logo_description">Logo for PomoDoIt</string>
+
+</resources>
