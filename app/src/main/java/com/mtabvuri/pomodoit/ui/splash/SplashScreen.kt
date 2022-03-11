@@ -21,6 +21,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import com.mtabvuri.pomodoit.R
 import com.mtabvuri.pomodoit.nav.LockScreenOrientation
+import com.mtabvuri.pomodoit.ui.components.Constraints
 import com.mtabvuri.pomodoit.ui.fullLogo
 import kotlinx.coroutines.delay
 
@@ -83,7 +84,7 @@ private fun SplashBox(alphaAnim: Float, textAnim: Float) {
                 painter = painterResource(fullLogo.drawableId),
                 contentDescription = stringResource(fullLogo.stringId),
                 modifier = Modifier
-                    .layoutId("logo")
+                    .layoutId(Constraints.Logo)
                     .alpha(alphaAnim)
             )
 
@@ -91,7 +92,7 @@ private fun SplashBox(alphaAnim: Float, textAnim: Float) {
                 text = stringResource(R.string.splash_statement),
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier
-                    .layoutId("text")
+                    .layoutId(Constraints.Text)
                     .alpha(textAnim)
             )
 
@@ -100,8 +101,8 @@ private fun SplashBox(alphaAnim: Float, textAnim: Float) {
 }
 
 private fun splashConstraints(margin: Dp) = ConstraintSet {
-    val logo = createRefFor("logo")
-    val text = createRefFor("text")
+    val logo = createRefFor(Constraints.Logo)
+    val text = createRefFor(Constraints.Text)
 
     constrain(logo) {
         centerTo(parent)
