@@ -1,6 +1,5 @@
 package com.mtabvuri.pomodoit.ui.splash
 
-import android.content.pm.ActivityInfo
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -20,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import com.mtabvuri.pomodoit.R
-import com.mtabvuri.pomodoit.nav.LockScreenOrientation
+import com.mtabvuri.pomodoit.nav.PortraitLayout
 import com.mtabvuri.pomodoit.ui.components.Constraints
 import com.mtabvuri.pomodoit.ui.fullLogo
 import kotlinx.coroutines.delay
@@ -31,9 +30,6 @@ import kotlinx.coroutines.delay
  */
 @Composable
 fun SplashScreen(onSplashAnimationEnd: () -> Unit) {
-
-    // Show the screen in only portrait mode.
-    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
     // Animations for the logo and text statement.
     var startLogoAnimation by remember { mutableStateOf(false) }
@@ -60,7 +56,9 @@ fun SplashScreen(onSplashAnimationEnd: () -> Unit) {
         onSplashAnimationEnd()
     }
 
-    SplashBox(logoAlphaAnim, textAlphaAnim)
+    PortraitLayout {
+        SplashBox(logoAlphaAnim, textAlphaAnim)
+    }
 
 }
 
@@ -69,7 +67,8 @@ private fun SplashBox(alphaAnim: Float, textAnim: Float) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colors.background)) {
+            .background(color = MaterialTheme.colors.background)
+    ) {
         val constraints = if (maxWidth < maxHeight) {
             splashConstraints(margin = 16.dp) // Portrait constraints
         } else {
@@ -77,7 +76,8 @@ private fun SplashBox(alphaAnim: Float, textAnim: Float) {
         }
 
         ConstraintLayout(
-            constraintSet = constraints
+            constraintSet = constraints,
+            modifier = Modifier.fillMaxSize()
         ) {
 
             Image(
