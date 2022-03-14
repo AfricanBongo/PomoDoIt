@@ -10,6 +10,7 @@ import com.mtabvuri.pomodoit.nav.PomoDoItNavHost
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun PomoDoItApp() {
-    PomoDoItTheme() {
+    PomoDoItTheme {
         val navController = rememberNavController()
         PomoDoItNavHost(navController)
     }

@@ -18,13 +18,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mtabvuri.pomodoit.R
+import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository
+import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModel
+import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModelFactory
 import com.mtabvuri.pomodoit.ui.components.ClickableBoxWithTextSetting
 import com.mtabvuri.pomodoit.ui.components.SelectionSwitchSetting
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier) {
+fun SettingsScreen(userPreferencesViewModel: UserPreferencesViewModel = viewModel(
+    factory = UserPreferencesViewModelFactory(
+        UserPreferencesRepository(LocalContext.current)
+    )
+)) {
 
 }
 
@@ -39,51 +47,46 @@ fun SettingsBody(modifier: Modifier = Modifier, sectionSpacing: Dp = 40.dp) {
         modifier = modifier
     ) {
         SettingsSection(header = stringResource(R.string.time)) {
-            // TODO: Clean up here
-            repeat(3) {
-                ClickableBoxWithTextSetting(
-                    settingText = stringResource(R.string.pomodoro_time),
-                    boxText = "25min",
-                    modifier = Modifier
-                        .requiredHeight(64.dp)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(MaterialTheme.colors.surface)
-                ) {
-
-                }
-            }
+//            ClickableBoxWithTextSetting(
+//                settingText = stringResource(R.string.pomodoro_time),
+//                boxText = "25min",
+//                modifier = Modifier
+//                    .requiredHeight(64.dp)
+//                    .clip(MaterialTheme.shapes.small)
+//                    .background(MaterialTheme.colors.surface)
+//            ) {
+//
+//            }
         }
 
         SettingsSection(header = stringResource(R.string.notification)) {
-            // TODO: Clean up here
-            repeat(2) {
-                ClickableBoxWithTextSetting(
-                    settingText = stringResource(R.string.pomodoro_time),
-                    boxText = "25min",
-                    modifier = Modifier
-                        .requiredHeight(64.dp)
-                        .clip(MaterialTheme.shapes.small)
-                        .background(MaterialTheme.colors.surface)
-                ) {
 
-                }
-            }
+//            ClickableBoxWithTextSetting(
+//                settingText = stringResource(R.string.pomodoro_time),
+//                boxText = "25min",
+//                modifier = Modifier
+//                    .requiredHeight(64.dp)
+//                    .clip(MaterialTheme.shapes.small)
+//                    .background(MaterialTheme.colors.surface)
+//            ) {
+//
+//            }
 
-            val context = LocalContext.current
-            var toggleState by remember { mutableStateOf(false) }
-            SelectionSwitchSetting(
-                settingText = stringResource(R.string.vibration),
-                toggleState = toggleState,
-                modifier = Modifier
-                    .requiredHeight(64.dp)
-                    .clip(MaterialTheme.shapes.small)
-                    .background(MaterialTheme.colors.surface)
-            ) {
-                val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-                audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK,1.0f)
-                toggleState = !toggleState
-
-            }
+//            val context = LocalContext.current
+//            var toggleState by remember { mutableStateOf(false) }
+//            SelectionSwitchSetting(
+//                settingText = stringResource(R.string.vibration),
+//                toggleState = toggleState,
+//                modifier = Modifier
+//                    .requiredHeight(64.dp)
+//                    .clip(MaterialTheme.shapes.small)
+//                    .background(MaterialTheme.colors.surface)
+//            ) {
+//                val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+//                audioManager.playSoundEffect(AudioManager.FX_KEY_CLICK,1.0f)
+//                toggleState = !toggleState
+//
+//            }
         }
 
     }

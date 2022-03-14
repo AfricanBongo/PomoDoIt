@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModel
 import com.mtabvuri.pomodoit.nav.NavScreen.*
 import com.mtabvuri.pomodoit.ui.preferences.PreferencesScreen
 import com.mtabvuri.pomodoit.ui.settings.SettingsScreen
