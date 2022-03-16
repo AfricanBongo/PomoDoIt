@@ -16,11 +16,15 @@ class UserPreferencesViewModel(private val repository: UserPreferencesRepository
     }
 
     fun updateShortBreakTime(breakTime: Int) {
-
+        viewModelScope.launch {
+            repository.updateShortBreakTime(breakTime)
+        }
     }
 
     fun updateLongBreakTime(breakTime: Int) {
-
+        viewModelScope.launch {
+            repository.updateLongBreakTime(breakTime)
+        }
     }
 }
 
