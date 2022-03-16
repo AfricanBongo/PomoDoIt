@@ -1,5 +1,6 @@
 package com.mtabvuri.pomodoit.ui.components
 
+import android.widget.NumberPicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -17,6 +18,9 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
@@ -44,8 +48,10 @@ fun SelectionSwitch(
 fun ClickableBoxWithText(
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClickShowContent: @Composable () -> Unit
 ) {
+
+    var showContent by remember { mutableStateOf(false) }
 
     CompositionLocalProvider(
         LocalRippleTheme provides object: RippleTheme {
@@ -66,7 +72,7 @@ fun ClickableBoxWithText(
                 .clip(MaterialTheme.shapes.small)
                 .background(primaryMediumEmphasisColor)
                 .fillMaxHeight()
-                .clickable { onClick() }
+                .clickable { showContent = !showContent }
         ) {
             Text(
                 text = text,
@@ -75,6 +81,8 @@ fun ClickableBoxWithText(
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
+
+        onClickShowContent()
     }
 
 }
@@ -86,7 +94,7 @@ fun ClickableBoxWithTextSetting(
     marginHorizontal: Dp = 12.dp,
     marginVertical: Dp = 20.dp,
     boxText: String,
-    onBoxClick: () -> Unit
+    onBoxClickShowContent: @Composable () -> Unit
 ) {
     BoxWithConstraints(modifier) {
         ConstraintLayout(
@@ -103,7 +111,7 @@ fun ClickableBoxWithTextSetting(
 
             ClickableBoxWithText(
                 text = boxText,
-                onClick = onBoxClick,
+                onClickShowContent = onBoxClickShowContent,
                 modifier = Modifier.layoutId(Constraints.Box)
             )
         }
@@ -138,6 +146,48 @@ fun SelectionSwitchSetting(
         }
     }
 
+}
+
+
+@Composable
+fun NumberPickerDialog(
+    range: IntRange,
+    initialValue: Int,
+    modifier: Modifier = Modifier,
+    onDismissRequest: () -> Unit,
+    onValueChanged: (Int) -> Unit
+) {
+
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true
+        )
+    ) {
+        Column(modifier) {
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .requiredHeight(100.dp),
+                factory = { context ->
+                    NumberPicker(context).apply {
+                        maxValue = range.last
+                        minValue = range.first
+                        value = initialValue
+                        setOnValueChangedListener { _, _, newValue ->
+                            onValueChanged(newValue)
+                        }
+                    }
+                }
+            )
+
+            TextButton(onClick = onDismissRequest) {
+                Text("Close")
+            }
+        }
+
+    }
 }
 
 private fun constraintsForSelectionSwitchSetting(marginHorizontal: Dp, marginVertical: Dp) = ConstraintSet{
@@ -216,5 +266,22 @@ fun ClickableBoxWithTextSettingPreview() {
         ) {
             // Do nothing
         }
+    }
+}
+
+@Preview(showBackground = true, heightDp = 60)
+@Composable
+fun NumberPickerDialogPreview() {
+    PomoDoItTheme {
+        NumberPickerDialog(
+            range = 25..60,
+            initialValue = 30,
+            onValueChanged = {
+                // Do nothing
+            },
+            onDismissRequest = {
+                // Do nothing
+            }
+        )
     }
 }
