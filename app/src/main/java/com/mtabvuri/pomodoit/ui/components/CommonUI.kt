@@ -14,18 +14,34 @@ import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 @Composable
 fun PrimaryButton(
     modifier: Modifier = Modifier,
-    actionText: String = "Button",
+    text: String = "Button",
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = MaterialTheme.colors.secondary
+    ),
     onClick: () -> Unit
 ) {
     Button(
         shape = RoundedCornerShape(25.dp),
         modifier = modifier,
         onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = MaterialTheme.colors.secondary
-        )
+        colors = colors
     ) {
-        Text(text = actionText)
+        Text(text = text)
+    }
+}
+
+@Composable
+fun SecondaryButton(
+    modifier: Modifier = Modifier,
+    text: String = "Button",
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = MaterialTheme.colors.onSurface
+    ),
+    onClick: () -> Unit
+) {
+    TextButton(onClick = onClick, colors = colors) {
+        Text(text)
     }
 }
 
@@ -35,6 +51,16 @@ fun PrimaryButtonPreview() {
     PomoDoItTheme {
         PrimaryButton {
             // Do Nothing
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SecondaryButtonPreview() {
+    PomoDoItTheme {
+        SecondaryButton {
+            // Do nothing
         }
     }
 }

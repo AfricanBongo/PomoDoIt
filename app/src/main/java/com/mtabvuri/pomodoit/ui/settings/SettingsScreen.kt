@@ -1,13 +1,13 @@
 package com.mtabvuri.pomodoit.ui.settings
 
+import android.widget.NumberPicker
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -16,11 +16,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mtabvuri.pomodoit.R
 import com.mtabvuri.pomodoit.data.preferences.*
-import com.mtabvuri.pomodoit.ui.components.ClickableBoxWithTextSetting
-import com.mtabvuri.pomodoit.ui.components.NumberPickerDialog
+import com.mtabvuri.pomodoit.ui.components.ClickableBoxWithDialogSetting
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 @Composable
@@ -91,35 +91,60 @@ private fun TimeSetting(
         settingTitle = settingTitle,
         boxText = "${timeInMin}min") {
 
-        NumberPickerDialog(
+        MinutePicker(
             range = lowestTime.timeInMin..highestTime.timeInMin,
             initialValue = timeInMin,
-            onDismissRequest = { TODO("Rewrite clickablebox to have dialog.") },
             onValueChanged = onTimeChanged,
             modifier = Modifier
+                .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
-                .background(MaterialTheme.colors.surface)
-                .padding(8.dp),
+                .background(MaterialTheme.colors.background)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
         )
     }
+}
+
+
+/**
+ * Minute picker used with a
+ */
+@Composable
+fun MinutePicker(
+    range: IntRange,
+    initialValue: Int,
+    modifier: Modifier = Modifier,
+    onValueChanged: (Int) -> Unit
+) {
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            NumberPicker(context).apply {
+                maxValue = range.last
+                minValue = range.first
+                value = initialValue
+                setOnValueChangedListener { _, _, newValue ->
+                    onValueChanged(newValue)
+                }
+            }
+        }
+    )
 }
 
 @Composable
 private fun StandardSettingBox(
     settingTitle: String,
     boxText: String,
-    onBoxClickShowContent: @Composable () -> Unit
+    dialogContent: @Composable () -> Unit
 ) {
-    ClickableBoxWithTextSetting(
-        settingText = settingTitle,
+    ClickableBoxWithDialogSetting(
+        settingTitle = settingTitle,
         boxText = boxText,
+        dialogContent = dialogContent,
         modifier = Modifier
             .requiredHeight(64.dp)
             .clip(MaterialTheme.shapes.small)
             .background(MaterialTheme.colors.surface)
-    ) {
-        onBoxClickShowContent()
-    }
+    )
 }
 
 /**
@@ -155,5 +180,19 @@ fun SettingsSection(
 fun SettingsBodyPreview() {
     PomoDoItTheme {
         SettingsBody()
+    }
+}
+
+@Preview(showBackground = true, heightDp = 60)
+@Composable
+fun MinutePickerDialogPreview() {
+    PomoDoItTheme {
+        MinutePicker(
+            range = 25..60,
+            initialValue = 30,
+            onValueChanged = {
+                // Do nothing
+            }
+        )
     }
 }

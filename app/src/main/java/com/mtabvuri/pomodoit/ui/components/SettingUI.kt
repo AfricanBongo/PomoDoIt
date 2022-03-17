@@ -1,6 +1,5 @@
 package com.mtabvuri.pomodoit.ui.components
 
-import android.widget.NumberPicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,17 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
+import com.mtabvuri.pomodoit.R
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 private val primaryMediumEmphasisColor = Color(0xFFF5F5BB)
+private val onSurfaceMediumEmphasisColor = Color(0xFF5C5C5C)
 
 @Composable
 fun SelectionSwitch(
@@ -44,15 +44,33 @@ fun SelectionSwitch(
     )
 }
 
+/**
+ * A composable with a clickable box that shows a dialog when clicked.
+ * @param text The text in the center of the box.
+ * @param dialogTitle Title of the dialog.
+ * @param dialogBackgroundColor The background color for the dialog.
+ * @param dialogTitleColor The color of the title of the dialog.
+ * @param closeButtonTextColor The text color of the button that dismisses the dialog.
+ * @param dialogContent Composable within the dialog, dialog utilises a [Column] layout.
+ * so composables should written taking this into consideration.
+ */
 @Composable
-fun ClickableBoxWithText(
+fun ClickableBoxWithDialog(
     text: String,
     modifier: Modifier = Modifier,
-    onClickShowContent: @Composable () -> Unit
+    dialogTitle: String,
+    dialogBackgroundColor: Color,
+    dialogTitleColor: Color,
+    closeButtonTextColor: Color,
+    dialogContent: @Composable () -> Unit
 ) {
 
     var showContent by remember { mutableStateOf(false) }
 
+    // Hide/show the dialog.
+    val onDismissRequest = { showContent = !showContent }
+
+    // Custom ripple for the box.
     CompositionLocalProvider(
         LocalRippleTheme provides object: RippleTheme {
             @Composable
@@ -69,10 +87,11 @@ fun ClickableBoxWithText(
         Box(
             contentAlignment = Alignment.Center,
             modifier = modifier
+                .defaultMinSize(minWidth = 80.dp)
+                .fillMaxHeight()
                 .clip(MaterialTheme.shapes.small)
                 .background(primaryMediumEmphasisColor)
-                .fillMaxHeight()
-                .clickable { showContent = !showContent }
+                .clickable { onDismissRequest() }
         ) {
             Text(
                 text = text,
@@ -82,19 +101,59 @@ fun ClickableBoxWithText(
             )
         }
 
-        onClickShowContent()
+        if (showContent) {
+            Dialog(onDismissRequest = onDismissRequest) {
+                Column(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.medium)
+                        .background(dialogBackgroundColor)
+                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+
+                    // Title of the dialog
+                    Text(
+                        text = dialogTitle,
+                        style = MaterialTheme.typography.h6,
+                        color = dialogTitleColor
+                    )
+
+                    // Content
+                    dialogContent()
+
+                    // Button that dismisses the dialog.
+                    SecondaryButton(
+                        text = stringResource(R.string.close_btn),
+                        onClick = onDismissRequest,
+                        colors = ButtonDefaults.textButtonColors(
+                            contentColor = closeButtonTextColor
+                        )
+                    )
+                }
+            }
+        }
     }
 
 }
 
+/**
+ * A composable with a clickable box that shows a dialog when clicked.
+ * @param settingTitle Title of the setting displayed from the start margin.
+ * @param boxText The text in the center of the box.
+ * @param dialogContent Composable within the dialog, dialog utilises a [Column] layout,
+ * so composables should written taking this into consideration.
+ */
 @Composable
-fun ClickableBoxWithTextSetting(
-    settingText: String,
+fun ClickableBoxWithDialogSetting(
+    settingTitle: String,
     modifier: Modifier = Modifier,
     marginHorizontal: Dp = 12.dp,
     marginVertical: Dp = 20.dp,
     boxText: String,
-    onBoxClickShowContent: @Composable () -> Unit
+    dialogBackgroundColor: Color = MaterialTheme.colors.surface,
+    dialogTitleColor: Color = onSurfaceMediumEmphasisColor,
+    closeButtonTextColor: Color = onSurfaceMediumEmphasisColor,
+    dialogContent: @Composable () -> Unit
 ) {
     BoxWithConstraints(modifier) {
         ConstraintLayout(
@@ -104,14 +163,18 @@ fun ClickableBoxWithTextSetting(
             constraintSet = constraintsForClickableBoxWithTextSetting(marginHorizontal, marginVertical)
         ) {
             Text(
-                text = settingText,
+                text = settingTitle,
                 style = MaterialTheme.typography.body1,
                 modifier = Modifier.layoutId(Constraints.Text)
             )
 
-            ClickableBoxWithText(
+            ClickableBoxWithDialog(
                 text = boxText,
-                onClickShowContent = onBoxClickShowContent,
+                dialogTitle = settingTitle,
+                dialogBackgroundColor = dialogBackgroundColor,
+                dialogTitleColor = dialogTitleColor,
+                closeButtonTextColor = closeButtonTextColor,
+                dialogContent = dialogContent,
                 modifier = Modifier.layoutId(Constraints.Box)
             )
         }
@@ -146,48 +209,6 @@ fun SelectionSwitchSetting(
         }
     }
 
-}
-
-
-@Composable
-fun NumberPickerDialog(
-    range: IntRange,
-    initialValue: Int,
-    modifier: Modifier = Modifier,
-    onDismissRequest: () -> Unit,
-    onValueChanged: (Int) -> Unit
-) {
-
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true
-        )
-    ) {
-        Column(modifier) {
-            AndroidView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .requiredHeight(100.dp),
-                factory = { context ->
-                    NumberPicker(context).apply {
-                        maxValue = range.last
-                        minValue = range.first
-                        value = initialValue
-                        setOnValueChangedListener { _, _, newValue ->
-                            onValueChanged(newValue)
-                        }
-                    }
-                }
-            )
-
-            TextButton(onClick = onDismissRequest) {
-                Text("Close")
-            }
-        }
-
-    }
 }
 
 private fun constraintsForSelectionSwitchSetting(marginHorizontal: Dp, marginVertical: Dp) = ConstraintSet{
@@ -232,16 +253,6 @@ fun SelectionSwitchPreview() {
     }
 }
 
-@Preview(heightDp = 60)
-@Composable
-fun ClickableBoxPreview() {
-    PomoDoItTheme {
-        ClickableBoxWithText("25min") {
-            // Do nothing
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun SelectionSwitchSettingPreview() {
@@ -260,28 +271,11 @@ fun SelectionSwitchSettingPreview() {
 @Composable
 fun ClickableBoxWithTextSettingPreview() {
     PomoDoItTheme {
-        ClickableBoxWithTextSetting(
-            settingText = "Pomodoro time",
+        ClickableBoxWithDialogSetting(
+            settingTitle = "Pomodoro time",
             boxText = "25min"
         ) {
             // Do nothing
         }
-    }
-}
-
-@Preview(showBackground = true, heightDp = 60)
-@Composable
-fun NumberPickerDialogPreview() {
-    PomoDoItTheme {
-        NumberPickerDialog(
-            range = 25..60,
-            initialValue = 30,
-            onValueChanged = {
-                // Do nothing
-            },
-            onDismissRequest = {
-                // Do nothing
-            }
-        )
     }
 }

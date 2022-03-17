@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">PomoDoIt</string>
 
+    <!-- Buttons -->
+    <string name="close_btn">Close</string>
+
     <!-- Settings -->
     <string name="time">Time</string>
     <string name="notification">Notification</string>
-    <string name="pomodoro_time">Pomodoro time (work time)</string>
+    <string name="pomodoro_time">Pomodoro time</string>
     <string name="short_break_time">Short break time</string>
     <string name="long_break_time">Long break time</string>
     <string name="pomodoro_sound">Pomodoro sound</string>
@@ -14,6 +17,7 @@
     <!-- Statements. -->
     <string name="splash_statement">Your minimalist pomodoro timer</string>
     <string name="preferences_statement">Set some stuff up before you \ncontinue</string>
+
     <!-- Content descriptions.. -->
     <string name="logo_description">Logo for PomoDoIt</string>
 
