@@ -28,6 +28,34 @@ private val primaryMediumEmphasisColor = Color(0xFFF5F5BB)
 private val onSurfaceMediumEmphasisColor = Color(0xFF5C5C5C)
 
 @Composable
+fun SoundSelection(
+    soundName: String,
+    modifier: Modifier = Modifier,
+    playButtonEnabled: Boolean = true,
+    playButtonVisible: Boolean = true,
+    onPlaySound: () -> Unit
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = soundName,
+            style = MaterialTheme.typography.body1,
+            modifier = Modifier.padding(start = 8.dp)
+        )
+
+        Spacer(modifier = Modifier.width(24.dp))
+
+        PlayButton(
+            enabled = playButtonEnabled,
+            visible = playButtonVisible,
+            onPlay = onPlaySound
+        )
+    }
+}
+
+@Composable
 fun SelectionSwitch(
     toggleState: Boolean,
     modifier: Modifier = Modifier,
@@ -242,6 +270,16 @@ private fun constraintsForClickableBoxWithTextSetting(marginHorizontal: Dp, marg
     }
 }
 
+@Preview
+@Composable
+fun SoundSelectionPreview() {
+    PomoDoItTheme {
+        SoundSelection(
+            soundName = "Arcade") {
+            // Do nothing
+        }
+    }
+}
 @Preview
 @Composable
 fun SelectionSwitchPreview() {

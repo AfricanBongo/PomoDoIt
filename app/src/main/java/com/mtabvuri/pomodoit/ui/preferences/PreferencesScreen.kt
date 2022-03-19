@@ -2,6 +2,8 @@ package com.mtabvuri.pomodoit.ui.preferences
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -32,7 +34,8 @@ fun PreferencesScreen(userPreferencesViewModel: UserPreferencesViewModel = viewM
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)
-                .padding(horizontal = 20.dp, vertical = 20.dp)
+                .padding(horizontal = 20.dp, vertical = 32.dp)
+                .verticalScroll(state = rememberScrollState())
         ) {
 
             Text(

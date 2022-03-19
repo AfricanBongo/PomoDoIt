@@ -4,8 +4,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.mtabvuri.pomodoit.ui.playIcon
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 /**
@@ -42,6 +45,29 @@ fun SecondaryButton(
 ) {
     TextButton(onClick = onClick, colors = colors) {
         Text(text)
+    }
+}
+
+@Composable
+fun PlayButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = false,
+    visible: Boolean = true,
+    tint: Color = MaterialTheme.colors.primaryVariant,
+    onPlay: () -> Unit
+) {
+    if (visible) {
+        IconButton(
+            onClick = onPlay,
+            modifier = modifier,
+            enabled = enabled
+        ) {
+            Icon(
+                imageVector = playIcon.imageVector,
+                contentDescription = stringResource(playIcon.contentDescription),
+                tint = tint
+            )
+        }
     }
 }
 

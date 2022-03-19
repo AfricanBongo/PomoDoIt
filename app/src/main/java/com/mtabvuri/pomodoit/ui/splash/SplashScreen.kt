@@ -82,7 +82,7 @@ private fun SplashBox(alphaAnim: Float, textAnim: Float) {
 
             Image(
                 painter = painterResource(fullLogo.drawableId),
-                contentDescription = stringResource(fullLogo.stringId),
+                contentDescription = stringResource(fullLogo.contentDescription),
                 modifier = Modifier
                     .layoutId(Constraints.Logo)
                     .alpha(alphaAnim)
