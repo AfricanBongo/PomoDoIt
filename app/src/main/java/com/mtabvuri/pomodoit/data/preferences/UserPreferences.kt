@@ -1,5 +1,7 @@
 package com.mtabvuri.pomodoit.data.preferences
 
+import com.mtabvuri.pomodoit.data.notification.Sound
+
 const val PREFERENCES_NAME = "user_preferences"
 
 enum class PreferenceTime(val timeInMin: Int) {
@@ -18,11 +20,17 @@ enum class PreferenceTime(val timeInMin: Int) {
 data class UserPreferences(
     val pomodoroTime: Int,
     val shortBreakTime: Int,
-    val longBreakTime: Int
+    val longBreakTime: Int,
+    val pomodoroSound: Sound,
+    val breakSound: Sound,
+    val vibration: Boolean
 )
 
 val DEFAULT_USER_PREFERENCE = UserPreferences(
     pomodoroTime = PreferenceTime.POMODORO_TIME_DEFAULT.timeInMin,
     shortBreakTime = PreferenceTime.SHORT_BREAK_TIME_DEFAULT.timeInMin,
-    longBreakTime = PreferenceTime.LONG_BREAK_TIME_DEFAULT.timeInMin
+    longBreakTime = PreferenceTime.LONG_BREAK_TIME_DEFAULT.timeInMin,
+    pomodoroSound = Sound.NONE,
+    breakSound = Sound.NONE,
+    vibration = true
 )

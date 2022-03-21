@@ -3,6 +3,7 @@ package com.mtabvuri.pomodoit.data.preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.mtabvuri.pomodoit.data.notification.Sound
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -24,6 +25,24 @@ class UserPreferencesViewModel(private val repository: UserPreferencesRepository
     fun updateLongBreakTime(breakTime: Int) {
         viewModelScope.launch {
             repository.updateLongBreakTime(breakTime)
+        }
+    }
+
+    fun updatePomodoroSound(sound: Sound) {
+        viewModelScope.launch {
+            repository.updatePomodoroSound(sound)
+        }
+    }
+
+    fun updateBreakSound(sound: Sound) {
+        viewModelScope.launch {
+            repository.updateBreakSound(sound)
+        }
+    }
+
+    fun updateVibration(shouldVibrate: Boolean) {
+        viewModelScope.launch {
+            repository.updateVibration(shouldVibrate)
         }
     }
 }
