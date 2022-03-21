@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -22,17 +23,19 @@ import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import com.mtabvuri.pomodoit.R
+import com.mtabvuri.pomodoit.ui.selectedIcon
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 private val primaryMediumEmphasisColor = Color(0xFFF5F5BB)
 private val onSurfaceMediumEmphasisColor = Color(0xFF5C5C5C)
+private val selectionColor = Color(0xFF007E3F)
 
 @Composable
 fun SoundSelection(
     soundName: String,
     modifier: Modifier = Modifier,
+    selected: Boolean = false,
     playButtonEnabled: Boolean = true,
-    playButtonVisible: Boolean = true,
     onPlaySound: () -> Unit
 ) {
     Row(
@@ -49,9 +52,19 @@ fun SoundSelection(
 
         PlayButton(
             enabled = playButtonEnabled,
-            visible = playButtonVisible,
             onPlay = onPlaySound
         )
+
+        Spacer(modifier = Modifier.width(24.dp))
+
+        if (selected) {
+            Icon(
+                imageVector = selectedIcon.imageVector,
+                contentDescription = stringResource(selectedIcon.contentDescription),
+                tint = selectionColor
+            )
+        }
+
     }
 }
 

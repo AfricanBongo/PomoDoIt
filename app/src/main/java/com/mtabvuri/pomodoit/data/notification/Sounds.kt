@@ -20,7 +20,8 @@ enum class Sound(@RawRes val resourceId: Int) {
     PIANO(R.raw.piano),
     SCORE(R.raw.score),
     TANG(R.raw.tang),
-    TIMER(R.raw.timer);
+    TIMER(R.raw.timer),
+    NONE(0);
 
     override fun toString(): String =
         if (this.name.contains("_")) {
@@ -36,7 +37,7 @@ object Sounds {
             .create(context, sound.resourceId)
             .apply {
                 start()
-                this.setOnCompletionListener { onCompletion() }
+                setOnCompletionListener { onCompletion() }
             }
     }
 }

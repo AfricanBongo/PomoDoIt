@@ -9,9 +9,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +23,7 @@ import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModel
 import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModelFactory
 import com.mtabvuri.pomodoit.nav.PortraitLayout
 import com.mtabvuri.pomodoit.ui.settings.SettingsBody
+import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 @Composable
 fun PreferencesScreen(userPreferencesViewModel: UserPreferencesViewModel = viewModel(
@@ -51,6 +54,12 @@ fun PreferencesScreen(userPreferencesViewModel: UserPreferencesViewModel = viewM
             SettingsBody()
         }
     }
+}
 
-
+@Preview(heightDp = 720, widthDp = 320, showBackground = true, backgroundColor = 0xFFFFFFE7)
+@Composable
+fun ScreenPreview() {
+    PomoDoItTheme {
+        PreferencesScreen()
+    }
 }

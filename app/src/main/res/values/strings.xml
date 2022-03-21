@@ -21,5 +21,6 @@
     <!-- Content descriptions.. -->
     <string name="logo_description">Logo for PomoDoIt</string>
     <string name="play_description">Play media</string>
+    <string name="selection_description">Selected item</string>
 
 </resources>

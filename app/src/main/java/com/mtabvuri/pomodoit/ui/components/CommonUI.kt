@@ -1,8 +1,10 @@
 package com.mtabvuri.pomodoit.ui.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -10,6 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mtabvuri.pomodoit.ui.playIcon
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
+
+private val lightGrey = Color(0xFFD3D3D3)
 
 /**
  * This button emphasizes on a primary action.
@@ -52,22 +56,23 @@ fun SecondaryButton(
 fun PlayButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = false,
-    visible: Boolean = true,
     tint: Color = MaterialTheme.colors.primaryVariant,
     onPlay: () -> Unit
 ) {
-    if (visible) {
-        IconButton(
-            onClick = onPlay,
-            modifier = modifier,
-            enabled = enabled
-        ) {
-            Icon(
-                imageVector = playIcon.imageVector,
-                contentDescription = stringResource(playIcon.contentDescription),
-                tint = tint
-            )
-        }
+    val iconTint by animateColorAsState(
+        targetValue = if (enabled) tint else MaterialTheme.colors.background
+    )
+
+    IconButton(
+        onClick = { onPlay() },
+        modifier = modifier,
+        enabled = enabled,
+    ) {
+        Icon(
+            imageVector = playIcon.imageVector,
+            contentDescription = stringResource(playIcon.contentDescription),
+            tint = iconTint
+        )
     }
 }
 
