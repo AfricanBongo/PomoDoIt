@@ -3,6 +3,7 @@
 
     <!-- Buttons -->
     <string name="close_btn">Close</string>
+    <string name="continue_btn">Continue</string>
 
     <!-- Settings -->
     <string name="time">Time</string>

@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -24,11 +23,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import com.mtabvuri.pomodoit.R
 import com.mtabvuri.pomodoit.ui.selectedIcon
+import com.mtabvuri.pomodoit.ui.theme.OnSurfaceMediumEmphasis
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
-
-private val primaryMediumEmphasisColor = Color(0xFFF5F5BB)
-private val onSurfaceMediumEmphasisColor = Color(0xFF5C5C5C)
-private val selectionColor = Color(0xFF007E3F)
+import com.mtabvuri.pomodoit.ui.theme.PrimaryMediumEmphasis
+import com.mtabvuri.pomodoit.ui.theme.ToggleSelection
 
 @Composable
 fun SoundSelection(
@@ -61,7 +59,7 @@ fun SoundSelection(
             Icon(
                 imageVector = selectedIcon.imageVector,
                 contentDescription = stringResource(selectedIcon.contentDescription),
-                tint = selectionColor
+                tint = ToggleSelection
             )
         }
 
@@ -79,7 +77,7 @@ fun SelectionSwitch(
         onCheckedChange = onToggleStateChanged,
         colors = SwitchDefaults.colors(
             checkedThumbColor = MaterialTheme.colors.primaryVariant,
-            checkedTrackColor = primaryMediumEmphasisColor
+            checkedTrackColor = PrimaryMediumEmphasis
         ),
         modifier = modifier
     )
@@ -131,13 +129,13 @@ fun ClickableBoxWithDialog(
                 .defaultMinSize(minWidth = 80.dp)
                 .fillMaxHeight()
                 .clip(MaterialTheme.shapes.small)
-                .background(primaryMediumEmphasisColor)
+                .background(PrimaryMediumEmphasis)
                 .clickable { onDismissRequest() }
         ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.body2,
-                color = MaterialTheme.colors.contentColorFor(primaryMediumEmphasisColor),
+                color = MaterialTheme.colors.contentColorFor(PrimaryMediumEmphasis),
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
             )
         }
@@ -192,8 +190,8 @@ fun ClickableBoxWithDialogSetting(
     marginVertical: Dp = 20.dp,
     boxText: String,
     dialogBackgroundColor: Color = MaterialTheme.colors.surface,
-    dialogTitleColor: Color = onSurfaceMediumEmphasisColor,
-    closeButtonTextColor: Color = onSurfaceMediumEmphasisColor,
+    dialogTitleColor: Color = OnSurfaceMediumEmphasis,
+    closeButtonTextColor: Color = OnSurfaceMediumEmphasis,
     dialogContent: @Composable () -> Unit
 ) {
     BoxWithConstraints(modifier) {

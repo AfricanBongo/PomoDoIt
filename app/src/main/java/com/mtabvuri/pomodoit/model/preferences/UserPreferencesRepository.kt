@@ -1,17 +1,17 @@
-package com.mtabvuri.pomodoit.data.preferences
+package com.mtabvuri.pomodoit.model.preferences
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import com.mtabvuri.pomodoit.data.notification.Sound
-import com.mtabvuri.pomodoit.data.preferences.PreferenceTime.*
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository.PreferenceKeys.BREAK_SOUND_KEY
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository.PreferenceKeys.LONG_BREAK_TIME_KEY
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository.PreferenceKeys.POMODORO_SOUND_KEY
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository.PreferenceKeys.POMODORO_TIME_KEY
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository.PreferenceKeys.SHORT_BREAK_TIME_KEY
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository.PreferenceKeys.VIBRATION_KEY
+import com.mtabvuri.pomodoit.model.notification.Sound
+import com.mtabvuri.pomodoit.model.preferences.PreferenceTime.*
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.BREAK_SOUND_KEY
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.LONG_BREAK_TIME_KEY
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.POMODORO_SOUND_KEY
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.POMODORO_TIME_KEY
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.SHORT_BREAK_TIME_KEY
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.VIBRATION_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map

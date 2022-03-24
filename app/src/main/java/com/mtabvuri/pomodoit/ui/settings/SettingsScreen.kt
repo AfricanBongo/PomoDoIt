@@ -1,6 +1,5 @@
 package com.mtabvuri.pomodoit.ui.settings
 
-import android.content.Context
 import android.widget.NumberPicker
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,10 +10,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,11 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mtabvuri.pomodoit.R
-import com.mtabvuri.pomodoit.data.notification.Sound
-import com.mtabvuri.pomodoit.data.notification.Sounds
-import com.mtabvuri.pomodoit.data.preferences.*
+import com.mtabvuri.pomodoit.model.notification.Sound
+import com.mtabvuri.pomodoit.model.notification.Sounds
+import com.mtabvuri.pomodoit.model.preferences.*
 import com.mtabvuri.pomodoit.ui.components.ClickableBoxWithDialogSetting
-import com.mtabvuri.pomodoit.ui.components.SelectionSwitch
 import com.mtabvuri.pomodoit.ui.components.SelectionSwitchSetting
 import com.mtabvuri.pomodoit.ui.components.SoundSelection
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme

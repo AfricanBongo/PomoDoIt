@@ -1,7 +1,6 @@
 package com.mtabvuri.pomodoit.ui.components
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,11 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.mtabvuri.pomodoit.ui.playIcon
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
-
-private val lightGrey = Color(0xFFD3D3D3)
 
 /**
  * This button emphasizes on a primary action.
@@ -28,10 +24,10 @@ fun PrimaryButton(
     onClick: () -> Unit
 ) {
     Button(
-        shape = RoundedCornerShape(25.dp),
+        shape = MaterialTheme.shapes.small,
         modifier = modifier,
         onClick = onClick,
-        colors = colors
+        colors = colors,
     ) {
         Text(text = text)
     }
@@ -47,7 +43,10 @@ fun SecondaryButton(
     ),
     onClick: () -> Unit
 ) {
-    TextButton(onClick = onClick, colors = colors) {
+    TextButton(
+        modifier = modifier,
+        onClick = onClick,
+        colors = colors) {
         Text(text)
     }
 }

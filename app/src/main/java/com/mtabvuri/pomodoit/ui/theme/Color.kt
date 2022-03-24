@@ -13,3 +13,6 @@ val OnPrimary = Color.Black
 val OnSecondary = Color.Black
 val OnBackground = Color.Black
 val OnSurface = Color.Black
+val PrimaryMediumEmphasis = Color(0xFFF5F5BB)
+val OnSurfaceMediumEmphasis = Color(0xFF5C5C5C)
+val ToggleSelection = Color(0xFF007E3F)

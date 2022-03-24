@@ -1,6 +1,6 @@
-package com.mtabvuri.pomodoit.data.preferences
+package com.mtabvuri.pomodoit.model.preferences
 
-import com.mtabvuri.pomodoit.data.notification.Sound
+import com.mtabvuri.pomodoit.model.notification.Sound
 
 const val PREFERENCES_NAME = "user_preferences"
 

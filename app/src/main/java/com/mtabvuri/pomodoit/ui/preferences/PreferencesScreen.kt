@@ -4,54 +4,58 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mtabvuri.pomodoit.R
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesRepository
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModel
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModelFactory
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesViewModel
+import com.mtabvuri.pomodoit.model.preferences.UserPreferencesViewModelFactory
 import com.mtabvuri.pomodoit.nav.PortraitLayout
+import com.mtabvuri.pomodoit.ui.components.PrimaryButton
 import com.mtabvuri.pomodoit.ui.settings.SettingsBody
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 @Composable
-fun PreferencesScreen(userPreferencesViewModel: UserPreferencesViewModel = viewModel(
-    factory = UserPreferencesViewModelFactory(
-        UserPreferencesRepository(LocalContext.current)
-    )
-)) {
+fun PreferencesScreen( onContinue: () -> Unit) {
 
     PortraitLayout {
         Column(
             Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colors.background)
-                .padding(horizontal = 20.dp, vertical = 32.dp)
                 .verticalScroll(state = rememberScrollState())
+                .padding(top = 40.dp, end = 24.dp, bottom = 32.dp, start = 24.dp)
         ) {
 
             Text(
                 text = stringResource(R.string.preferences_statement),
-                style = MaterialTheme.typography.h6.copy(
-                    fontWeight = FontWeight.SemiBold
+                style = MaterialTheme.typography.h5.copy(
+                    fontWeight = FontWeight.Medium
                 ),
                 color = MaterialTheme.colors.onBackground
             )
 
             Spacer(Modifier.height(48.dp))
 
+            // All the settings for the app
             SettingsBody()
+
+            Spacer(Modifier.height(60.dp))
+
+            // Continue button
+            PrimaryButton(
+                text = stringResource(R.string.continue_btn),
+                onClick = onContinue,
+                modifier = Modifier.fillMaxWidth().requiredHeight(48.dp)
+            )
         }
     }
 }
@@ -60,6 +64,8 @@ fun PreferencesScreen(userPreferencesViewModel: UserPreferencesViewModel = viewM
 @Composable
 fun ScreenPreview() {
     PomoDoItTheme {
-        PreferencesScreen()
+        PreferencesScreen {
+            // Do nothing
+        }
     }
 }

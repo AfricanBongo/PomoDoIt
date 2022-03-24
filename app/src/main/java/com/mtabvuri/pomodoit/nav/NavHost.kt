@@ -13,12 +13,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.mtabvuri.pomodoit.data.preferences.UserPreferencesViewModel
 import com.mtabvuri.pomodoit.nav.NavScreen.*
+import com.mtabvuri.pomodoit.ui.home.HomeScreen
 import com.mtabvuri.pomodoit.ui.preferences.PreferencesScreen
 import com.mtabvuri.pomodoit.ui.settings.SettingsScreen
 import com.mtabvuri.pomodoit.ui.splash.SplashScreen
-import java.nio.file.WatchEvent
 
 /**
  * A navigation destination within the app.
@@ -35,7 +34,10 @@ fun PomoDoItNavHost(navController: NavHostController) {
         composable(Splash.name) { SplashScreen {
             navController.navigate(Preferences.name)
         }}
-        composable(Preferences.name) { PreferencesScreen() }
+        composable(Preferences.name) { PreferencesScreen {
+            navController.navigate(Home.name)
+        }}
+        composable(Home.name) { HomeScreen() }
         composable(Settings.name) { SettingsScreen() }
     }
 }

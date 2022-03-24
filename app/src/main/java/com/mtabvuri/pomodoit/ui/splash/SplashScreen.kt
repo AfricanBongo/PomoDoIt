@@ -64,43 +64,33 @@ fun SplashScreen(onSplashAnimationEnd: () -> Unit) {
 
 @Composable
 private fun SplashBox(alphaAnim: Float, textAnim: Float) {
-    BoxWithConstraints(
+    ConstraintLayout(
+        constraintSet = splashConstraints(),
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colors.background)
     ) {
-        val constraints = if (maxWidth < maxHeight) {
-            splashConstraints(margin = 16.dp) // Portrait constraints
-        } else {
-            splashConstraints(margin = 32.dp) // Landscape constraints
-        }
 
-        ConstraintLayout(
-            constraintSet = constraints,
-            modifier = Modifier.fillMaxSize()
-        ) {
+        Image(
+            painter = painterResource(fullLogo.drawableId),
+            contentDescription = stringResource(fullLogo.contentDescription),
+            modifier = Modifier
+                .layoutId(Constraints.Logo)
+                .alpha(alphaAnim)
+        )
 
-            Image(
-                painter = painterResource(fullLogo.drawableId),
-                contentDescription = stringResource(fullLogo.contentDescription),
-                modifier = Modifier
-                    .layoutId(Constraints.Logo)
-                    .alpha(alphaAnim)
-            )
+        Text(
+            text = stringResource(R.string.splash_statement),
+            style = MaterialTheme.typography.h6,
+            modifier = Modifier
+                .layoutId(Constraints.Text)
+                .alpha(textAnim)
+        )
 
-            Text(
-                text = stringResource(R.string.splash_statement),
-                style = MaterialTheme.typography.h6,
-                modifier = Modifier
-                    .layoutId(Constraints.Text)
-                    .alpha(textAnim)
-            )
-
-        }
     }
 }
 
-private fun splashConstraints(margin: Dp) = ConstraintSet {
+private fun splashConstraints() = ConstraintSet {
     val logo = createRefFor(Constraints.Logo)
     val text = createRefFor(Constraints.Text)
 

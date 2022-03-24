@@ -1,4 +1,4 @@
-package com.mtabvuri.pomodoit.data.notification
+package com.mtabvuri.pomodoit.model.notification
 
 import android.content.Context
 import android.media.MediaPlayer

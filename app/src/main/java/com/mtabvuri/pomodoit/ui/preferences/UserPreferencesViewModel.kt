@@ -1,9 +1,9 @@
-package com.mtabvuri.pomodoit.data.preferences
+package com.mtabvuri.pomodoit.model.preferences
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.mtabvuri.pomodoit.data.notification.Sound
+import com.mtabvuri.pomodoit.model.notification.Sound
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
