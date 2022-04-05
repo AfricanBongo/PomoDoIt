@@ -161,7 +161,7 @@ fun ClickableBoxWithDialog(
                     dialogContent()
 
                     // Button that dismisses the dialog.
-                    SecondaryButton(
+                    LowEmphasisButton(
                         text = stringResource(R.string.close_btn),
                         onClick = onDismissRequest,
                         colors = ButtonDefaults.textButtonColors(

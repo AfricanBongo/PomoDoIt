@@ -1,6 +1,7 @@
 package com.mtabvuri.pomodoit.ui.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,7 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import com.mtabvuri.pomodoit.ui.playIcon
+import com.mtabvuri.pomodoit.ui.theme.OnPrimaryMediumEmphasis
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 /**
@@ -35,6 +38,26 @@ fun PrimaryButton(
 
 @Composable
 fun SecondaryButton(
+    modifier: Modifier = Modifier,
+    text: String = "Button",
+    colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = OnPrimaryMediumEmphasis
+    ),
+    border: BorderStroke = BorderStroke(Dp.Hairline, OnPrimaryMediumEmphasis),
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        modifier = modifier,
+        colors = colors,
+        border = border,
+        onClick = onClick) {
+        Text(text = text)
+    }
+}
+
+@Composable
+fun LowEmphasisButton(
     modifier: Modifier = Modifier,
     text: String = "Button",
     colors: ButtonColors = ButtonDefaults.buttonColors(
@@ -89,7 +112,7 @@ fun PrimaryButtonPreview() {
 @Composable
 fun SecondaryButtonPreview() {
     PomoDoItTheme {
-        SecondaryButton {
+        LowEmphasisButton {
             // Do nothing
         }
     }
