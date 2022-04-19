@@ -1,19 +1,13 @@
 package com.mtabvuri.pomodoit.nav
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.pm.ActivityInfo
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.navOptions
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.mtabvuri.pomodoit.nav.NavScreen.*
@@ -36,11 +30,26 @@ enum class NavScreen {
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun PomoDoItNavHost(navController: NavHostController) {
+
+    val context = LocalContext.current
+
+    // Controls the onboarding process.
+    val onboardingPreference by remember {
+        mutableStateOf(OnboardingViewModel(context = context))
+    }
+
+    // Whether or not onboarding should be done.
+    val shouldOnboard by onboardingPreference.shouldOnboard.collectAsState(initial = false)
+
     AnimatedNavHost(
         navController = navController, startDestination = Splash.name
     ) {
         composable(route = Splash.name) { SplashScreen {
-            navController.navigate(Preferences.name)
+            if (shouldOnboard) {
+                navController.navigate(Preferences.name)
+            } else {
+                navController.navigate(Home.name)
+            }
         }}
         composable(
             Preferences.name,
@@ -60,7 +69,11 @@ fun PomoDoItNavHost(navController: NavHostController) {
             }
         ) {
             PreferencesScreen {
-                navController.navigate(Home.name)
+                onboardingPreference.cancelOnboarding(true)
+                navController.navigate(
+                    route = Home.name,
+                    navOptions = navOptions { popUpTo(Splash.name) }
+                )
             }
         }
 
@@ -92,43 +105,3 @@ fun PomoDoItNavHost(navController: NavHostController) {
     }
 }
 
-
-/**
- * Lock the screen within the given orientation.
- * @param orientation An orientation value of [ActivityInfo].
- */
-@Composable
-fun LockScreenOrientation(orientation: Int) {
-    val context = LocalContext.current
-    DisposableEffect(Unit) {
-        val activity = context.findActivity() ?: return@DisposableEffect onDispose {}
-        val originalOrientation = activity.requestedOrientation
-        activity.requestedOrientation = orientation
-        onDispose {
-            // restore original orientation when view disappears
-            activity.requestedOrientation = originalOrientation
-        }
-    }
-}
-
-/**
- * Used to display fullscreen content that should be viewed in portrait mode only
- */
-@Composable
-fun PortraitLayout(
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-
-    Surface(modifier.fillMaxSize()) {
-        content()
-    }
-
-}
-
-fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}

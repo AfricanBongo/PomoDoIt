@@ -19,7 +19,7 @@ import com.mtabvuri.pomodoit.ui.settings.SettingsBody
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
 @Composable
-fun PreferencesScreen( onContinue: () -> Unit) {
+fun PreferencesScreen(onContinue: () -> Unit) {
 
     PortraitLayout {
         Column(

@@ -48,12 +48,6 @@ class UserPreferencesViewModel(private val repository: UserPreferencesRepository
             repository.updateVibration(shouldVibrate)
         }
     }
-
-    fun cancelOnboarding(cancelOnboarding: Boolean) {
-        viewModelScope.launch {
-            repository.cancelOnboarding(cancelOnboarding)
-        }
-    }
 }
 
 class UserPreferencesViewModelFactory(private val context: Context): ViewModelProvider.Factory {

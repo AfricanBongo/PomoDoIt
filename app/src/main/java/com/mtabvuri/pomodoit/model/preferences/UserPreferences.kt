@@ -31,8 +31,7 @@ data class UserPreferences(
     val longBreakTime: Int,
     val pomodoroSound: Sound,
     val breakSound: Sound,
-    val vibration: Boolean,
-    val onboard: Boolean
+    val vibration: Boolean
 )
 
 val DEFAULT_USER_PREFERENCE = UserPreferences(
@@ -41,6 +40,5 @@ val DEFAULT_USER_PREFERENCE = UserPreferences(
     longBreakTime = PreferenceTime.LONG_BREAK_TIME_DEFAULT.timeInMin,
     pomodoroSound = Sound.NONE,
     breakSound = Sound.NONE,
-    vibration = true,
-    onboard = true
+    vibration = true
 )
