@@ -6,8 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,17 +21,57 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mtabvuri.pomodoit.R
 import com.mtabvuri.pomodoit.model.notification.Sound
 import com.mtabvuri.pomodoit.model.notification.Sounds
-import com.mtabvuri.pomodoit.model.preferences.*
+import com.mtabvuri.pomodoit.model.preferences.DEFAULT_USER_PREFERENCE
+import com.mtabvuri.pomodoit.model.preferences.PreferenceTime
+import com.mtabvuri.pomodoit.nav.PortraitLayout
+import com.mtabvuri.pomodoit.ui.backIcon
 import com.mtabvuri.pomodoit.ui.components.ClickableBoxWithDialogSetting
 import com.mtabvuri.pomodoit.ui.components.SelectionSwitchSetting
 import com.mtabvuri.pomodoit.ui.components.SoundSelection
+import com.mtabvuri.pomodoit.ui.preferences.UserPreferencesViewModel
+import com.mtabvuri.pomodoit.ui.preferences.UserPreferencesViewModelFactory
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 
+/**
+ * @param onBackPressed The callback invoked when the back button of the settings screen is pressed.
+ */
 @Composable
-fun SettingsScreen() {
-    SettingsBody()
+fun SettingsScreen(onBackPressed: () -> Unit) {
+    PortraitLayout {
+        Scaffold(
+            topBar = {
+                SettingsTopBar(onClick = onBackPressed)
+            },
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+        ) {
+            SettingsBody(modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp))
+        }
+    }
 }
 
+@Composable
+fun SettingsTopBar(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    TopAppBar(
+        modifier = modifier,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
+        contentColor = MaterialTheme.colors.onPrimary
+    ) {
+        IconButton(onClick = onClick) {
+            Icon(
+                imageVector = backIcon.imageVector,
+                contentDescription = stringResource(backIcon.contentDescription)
+            )
+        }
+
+        Text(
+            text = stringResource(R.string.settings),
+            style = MaterialTheme.typography.h5
+        )
+    }
+
+}
 /**
  * Contains settings split into sections.
  * @param sectionSpacing Spacing between section items.
@@ -42,7 +81,7 @@ fun SettingsBody(
     modifier: Modifier = Modifier,
     userPreferencesViewModel: UserPreferencesViewModel = viewModel(
         factory = UserPreferencesViewModelFactory(
-            UserPreferencesRepository(LocalContext.current)
+            LocalContext.current
         )
     ),
     sectionSpacing: Dp = 40.dp
@@ -278,6 +317,15 @@ fun SettingsSection(
 
 }
 
+@Preview
+@Composable
+fun SettingsHeaderPreview() {
+    PomoDoItTheme {
+        SettingsTopBar {
+            // Nothing
+        }
+    }
+}
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFE7, widthDp = 360, heightDp = 720)
 @Composable
 fun SettingsBodyPreview() {
@@ -297,5 +345,15 @@ fun MinutePickerDialogPreview() {
                 // Do nothing
             }
         )
+    }
+}
+
+@Preview
+@Composable
+fun SettingsScreenPreview() {
+    PomoDoItTheme {
+        SettingsScreen {
+            // Do nothing.
+        }
     }
 }

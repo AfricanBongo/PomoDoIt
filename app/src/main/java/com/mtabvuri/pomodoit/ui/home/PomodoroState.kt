@@ -3,8 +3,9 @@ package com.mtabvuri.pomodoit.ui.home
 /**
  * A state in the pomodoro session.
  */
-sealed class PomodoroState {
-    class Running(val onWait: () -> Unit) : PomodoroState()
-    class Waiting(val onRun: () -> Unit, val onStop: () -> Unit) : PomodoroState()
-    class Default(val completedPomodoros: Int, val onStart: () -> Unit): PomodoroState()
+enum class PomodoroState(val session: String) {
+    POMODORO("Pomodoro"),
+    SHORT_BREAK("Short break"),
+    LONG_BREAK("Long break"),
+    WAITING("Waiting");
 }

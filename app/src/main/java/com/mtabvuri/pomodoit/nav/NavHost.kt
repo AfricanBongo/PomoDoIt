@@ -81,10 +81,14 @@ fun PomoDoItNavHost(navController: NavHostController) {
                 }
             }
         ) {
-            HomeScreen()
+            HomeScreen {
+                navController.navigate(Settings.name)
+            }
         }
 
-        composable(Settings.name) { SettingsScreen() }
+        composable(Settings.name) { SettingsScreen {
+            navController.popBackStack()
+        }}
     }
 }
 
@@ -108,13 +112,16 @@ fun LockScreenOrientation(orientation: Int) {
 }
 
 /**
- * Used to display content that should be viewed in portrait mode only
+ * Used to display fullscreen content that should be viewed in portrait mode only
  */
 @Composable
-fun PortraitLayout(content: @Composable () -> Unit) {
+fun PortraitLayout(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
     LockScreenOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
-    Surface(Modifier.fillMaxSize()) {
+    Surface(modifier.fillMaxSize()) {
         content()
     }
 

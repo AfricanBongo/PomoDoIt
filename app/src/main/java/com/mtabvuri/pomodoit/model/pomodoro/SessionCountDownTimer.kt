@@ -12,7 +12,7 @@ class SessionCountDownTimer(
 ) {
 
     // Time in milliseconds.
-    private var _timeInMillisUntilFinished: Long = 0L
+    private var _timeInMillisUntilFinished: Long = millisInFuture
 
     // CountDownTimer.
     private lateinit var timer: SessionTimer
@@ -26,11 +26,6 @@ class SessionCountDownTimer(
     val timeInMillisUntilFinished: Long
         get() = _timeInMillisUntilFinished
 
-    /**
-     * Time in seconds.
-     */
-    val timeInSecsUntilFinished: Int
-        get() = (_timeInMillisUntilFinished / 1000).toInt()
 
     /**
      * Whether the timer is running or not.

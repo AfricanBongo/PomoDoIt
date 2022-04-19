@@ -7,6 +7,10 @@ import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.intl.Locale
 import com.mtabvuri.pomodoit.R
 
+/**
+ * An enum class that represents a sound that can be played.
+ * @param resourceId The [RawRes] of the sound file to be read.
+ */
 enum class Sound(@RawRes val resourceId: Int) {
     ARCADE(R.raw.arcade),
     BEEP_BEEP(R.raw.beep_beep),
@@ -32,6 +36,9 @@ enum class Sound(@RawRes val resourceId: Int) {
 }
 
 object Sounds {
+    /**
+     * Starts playing a sound when invoked.
+     */
     fun playSound(context: Context, sound: Sound, onCompletion: () -> Unit) {
         MediaPlayer
             .create(context, sound.resourceId)
