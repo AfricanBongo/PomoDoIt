@@ -8,7 +8,6 @@ import com.mtabvuri.pomodoit.model.notification.Sound
 import com.mtabvuri.pomodoit.model.preferences.PreferenceTime.*
 import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.BREAK_SOUND_KEY
 import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.LONG_BREAK_TIME_KEY
-import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.ONBOARDING_KEY
 import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.POMODORO_SOUND_KEY
 import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.POMODORO_TIME_KEY
 import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository.PreferenceKeys.SHORT_BREAK_TIME_KEY
@@ -76,12 +75,6 @@ class UserPreferencesRepository(private val context: Context) {
         }
     }
 
-    suspend fun cancelOnboarding(cancelOnboarding: Boolean) {
-        context.dataStore.edit { preferences ->
-            preferences[ONBOARDING_KEY] = !cancelOnboarding
-        }
-    }
-
     private fun mapUserPreferences(preferences: Preferences): UserPreferences {
 
         val noSound = Sound.NONE.name
@@ -93,7 +86,6 @@ class UserPreferencesRepository(private val context: Context) {
         val pomodoroSound = Sound.valueOf(preferences[POMODORO_SOUND_KEY] ?: noSound)
         val breakSound = Sound.valueOf(preferences[BREAK_SOUND_KEY] ?: noSound)
         val vibration = preferences[VIBRATION_KEY] ?: true
-        val onboard = preferences[ONBOARDING_KEY] ?: true
 
         return UserPreferences(
             pomodoroTime = pomodoroTime,
@@ -101,13 +93,11 @@ class UserPreferencesRepository(private val context: Context) {
             longBreakTime = longBreakTime,
             pomodoroSound = pomodoroSound,
             breakSound = breakSound,
-            vibration = vibration,
-            onboard = onboard
+            vibration = vibration
         )
     }
 
     private object PreferenceKeys {
-        val ONBOARDING_KEY = booleanPreferencesKey("onboarding")
         val POMODORO_TIME_KEY = intPreferencesKey("pomodoro_time")
         val SHORT_BREAK_TIME_KEY = intPreferencesKey("short_break_time")
         val LONG_BREAK_TIME_KEY = intPreferencesKey("long_break_time")

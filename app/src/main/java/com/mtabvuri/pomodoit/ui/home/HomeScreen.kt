@@ -1,15 +1,17 @@
 package com.mtabvuri.pomodoit.ui.home
 
 import android.text.format.DateFormat
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.TweenSpec
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -22,11 +24,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.mtabvuri.pomodoit.R
-import com.mtabvuri.pomodoit.model.preferences.UserPreferencesRepository
 import com.mtabvuri.pomodoit.nav.PortraitLayout
 import com.mtabvuri.pomodoit.ui.components.PrimaryButton
+import com.mtabvuri.pomodoit.ui.components.SecondaryButton
 import com.mtabvuri.pomodoit.ui.settingsIcon
 import com.mtabvuri.pomodoit.ui.theme.OnPrimaryMediumEmphasis
+import com.mtabvuri.pomodoit.ui.theme.OnSecondaryMediumEmphasis
 import com.mtabvuri.pomodoit.ui.theme.PomoDoItTheme
 import com.mtabvuri.pomodoit.ui.theme.Progress
 
@@ -36,17 +39,52 @@ private const val BUTTON_BOX_CONSTRAINT = "button_box"
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel = HomeScreenViewModel(
-        UserPreferencesRepository(LocalContext.current)
+    viewModel: HomeScreenViewModel = viewModel(
+        factory = HomeScreenViewModelFactory(context = LocalContext.current)
     ),
-    onSettingsButtonClicked: () -> Unit
+    onSettingsButtonClicked: () -> Unit,
 ) {
+
+    val tweenSpec = TweenSpec<Color> (
+        durationMillis = 1000
+    )
+
+    val backgroundColor by animateColorAsState(
+        targetValue = when (viewModel.pomodoroState) {
+            is PomodoroState.Pomodoro -> {
+                MaterialTheme.colors.secondary
+            }
+            else -> MaterialTheme.colors.background
+        },
+        animationSpec = tweenSpec
+    )
+
+    val primaryContentColor by animateColorAsState(
+        targetValue = when (viewModel.pomodoroState) {
+            is PomodoroState.Pomodoro -> {
+                MaterialTheme.colors.onSecondary
+            }
+            else -> MaterialTheme.colors.onBackground
+        },
+        animationSpec = tweenSpec
+    )
+
+    val secondaryContentColor by animateColorAsState(
+        targetValue = when (viewModel.pomodoroState) {
+            is PomodoroState.Pomodoro -> {
+                OnSecondaryMediumEmphasis
+            }
+            else -> OnPrimaryMediumEmphasis
+        },
+        animationSpec = tweenSpec
+    )
+
     PortraitLayout {
         ConstraintLayout(
             constraintSet = homeScreenConstraints(),
             modifier = Modifier
                 .fillMaxSize()
-                .background(color = MaterialTheme.colors.background)
+                .background(color = backgroundColor)
                 .padding(all = 16.dp)
         ) {
             IconButton(
@@ -56,22 +94,24 @@ fun HomeScreen(
                 Icon(
                     imageVector = settingsIcon.imageVector,
                     contentDescription = stringResource(settingsIcon.contentDescription),
-                    tint = MaterialTheme.colors.primary,
+                    tint = secondaryContentColor,
                 )
             }
 
             SessionTimeView(
-                state = PomodoroState.WAITING,
+                state = viewModel.pomodoroState,
+                colors = primaryContentColor to secondaryContentColor,
                 timeInMillis = viewModel.timeInMillis,
                 modifier = Modifier.layoutId(TIME_TEXT_CONSTRAINT)
             )
 
-            StartPomodoroButton(
-                onClick = viewModel::startTimer,
+            ButtonBox(
+                pomodoroState = viewModel.pomodoroState,
+                colors = primaryContentColor to backgroundColor,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .requiredHeight(48.dp)
-                    .layoutId(BUTTON_BOX_CONSTRAINT),
+                    .requiredHeight(56.dp)
+                    .layoutId(BUTTON_BOX_CONSTRAINT)
             )
         }
     }
@@ -106,6 +146,7 @@ private fun SessionTimeView(
     state: PomodoroState,
     timeInMillis: Long,
     modifier: Modifier = Modifier,
+    colors: Pair<Color, Color> = OnPrimaryMediumEmphasis to OnSecondaryMediumEmphasis, // First color is the primary color and second is secondary.
 ) {
     // Convert from long into minutes and seconds notation, i.e. 00:00
     val timeAsString: String = DateFormat.format("mm:ss", timeInMillis).toString()
@@ -118,7 +159,7 @@ private fun SessionTimeView(
         Text(
             text = state.session,
             style = MaterialTheme.typography.subtitle1.copy(
-                color = OnPrimaryMediumEmphasis
+                color = colors.second
             )
         )
 
@@ -126,7 +167,7 @@ private fun SessionTimeView(
             text = timeAsString,
             style = MaterialTheme.typography.h1.copy(
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = colors.first
             )
         )
     }
@@ -137,10 +178,35 @@ i.e. pause and play pomodoro stage.
  */
 @Composable
 private fun ButtonBox(
+    pomodoroState: PomodoroState,
+    colors: Pair<Color, Color>, // First color is the primary color and second is background.
     modifier: Modifier = Modifier,
-    pomodoroState: PomodoroState
 ) {
+    when (pomodoroState) {
+        is PomodoroState.Waiting -> {
+            StartPomodoroButton(
+                onClick = pomodoroState.onStart,
+                modifier = modifier,
+            )
+        }
 
+        is PomodoroState.Pomodoro -> {
+            PausePomodoroButton(
+                modifier = modifier,
+                onClick = pomodoroState.onPause,
+                colors = ButtonDefaults.buttonColors(
+                backgroundColor = colors.second,
+                contentColor = colors.first
+            ))
+        }
+        is PomodoroState.Pause -> {
+            ResumePomodoroButton(
+                onClick = pomodoroState.onResume,
+                modifier = modifier,
+            )
+        }
+        else -> { /* Nothing */ }
+    }
 }
 
 @Composable
@@ -193,6 +259,34 @@ private fun ProgressPill(
 }
 
 @Composable
+fun ResumePomodoroButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    PrimaryButton(
+        modifier = modifier,
+        text = stringResource(R.string.resume_btn),
+        onClick = onClick,
+    )
+}
+
+@Composable
+fun PausePomodoroButton(
+    colors: ButtonColors,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
+    val borderStrokeColor = colors.contentColor(enabled = true).value
+    SecondaryButton(
+        modifier = modifier,
+        text = stringResource(R.string.pause_btn),
+        onClick = onClick,
+        colors = colors,
+        border = BorderStroke(2.dp,borderStrokeColor)
+    )
+}
+
+@Composable
 fun StartPomodoroButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
@@ -200,7 +294,7 @@ fun StartPomodoroButton(
     PrimaryButton(
         modifier = modifier,
         text = stringResource(R.string.start_btn),
-        onClick = onClick
+        onClick = onClick,
     )
 }
 
@@ -208,7 +302,7 @@ fun StartPomodoroButton(
 @Composable
 fun SessionTimeViewPreview() {
     PomoDoItTheme {
-        SessionTimeView(PomodoroState.WAITING, (10000 * 78.6).toLong())
+        SessionTimeView(PomodoroState.Waiting { /* Nothing */ }, (10000 * 78.6).toLong())
     }
 }
 

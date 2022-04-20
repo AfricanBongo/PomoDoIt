@@ -10,13 +10,14 @@ val SecondaryVariant = Color(0xFFDC8481)
 val Background = Color(0xFFFFFFE7)
 val Surface = Color(0xFFFFFFFF)
 val OnPrimary = Color.Black
-val OnSecondary = Color.Black
+val OnSecondary = Color.White
 val OnBackground = Color.Black
 val OnSurface = Color.Black
 
 // Other colors
 val PrimaryMediumEmphasis = Color(0xFFF5F5BB)
 val OnPrimaryMediumEmphasis = Color(0xFF5C5C5C)
+val OnSecondaryMediumEmphasis = Color(0xFFEFEFEF)
 val OnSurfaceMediumEmphasis = Color(0xFF5C5C5C)
 val ToggleSelection = Color(0xFF007E3F)
 val Progress = Color(0xFF007E3F)

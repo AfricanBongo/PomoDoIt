@@ -42,3 +42,15 @@ val DEFAULT_USER_PREFERENCE = UserPreferences(
     breakSound = Sound.NONE,
     vibration = true
 )
+
+fun UserPreferences.pomodoroTimeInMillis(): Long {
+    return pomodoroTime * 60 * 1000L
+}
+
+fun UserPreferences.shortBreakTimeInMillis(): Long {
+    return shortBreakTime * 60 * 1000L
+}
+
+fun UserPreferences.longBreakTimeInMillis(): Long {
+    return longBreakTime * 60 * 1000L
+}
