@@ -40,11 +40,13 @@ object Sounds {
      * Starts playing a sound when invoked.
      */
     fun playSound(context: Context, sound: Sound, onCompletion: () -> Unit) {
-        MediaPlayer
-            .create(context, sound.resourceId)
-            .apply {
-                start()
-                setOnCompletionListener { onCompletion() }
-            }
+        if (sound != Sound.NONE) {
+            MediaPlayer
+                .create(context, sound.resourceId)
+                .apply {
+                    start()
+                    setOnCompletionListener { onCompletion() }
+                }
+        }
     }
 }

@@ -8,6 +8,7 @@
     <string name="start_another_btn">Start another</string>
     <string name="pause_btn">Pause</string>
     <string name="resume_btn">Resume</string>
+    <string name="stop_btn">Stop</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>
