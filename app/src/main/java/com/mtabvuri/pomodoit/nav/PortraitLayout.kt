@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
  * @param orientation An orientation value of [ActivityInfo].
  */
 @Composable
-fun LockScreenOrientation(orientation: Int) {
+private fun LockScreenOrientation(orientation: Int) {
     val context = LocalContext.current
     DisposableEffect(Unit) {
         val activity = context.findActivity() ?: return@DisposableEffect onDispose {}
@@ -45,7 +45,7 @@ fun PortraitLayout(
 
 }
 
-fun Context.findActivity(): Activity? = when (this) {
+private fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.findActivity()
     else -> null

@@ -149,19 +149,17 @@ private fun homeScreenConstraints(): ConstraintSet {
         }
 
         constrain(timeText) {
-            top.linkTo(settingsButton.bottom, 120.dp)
             centerHorizontallyTo(parent)
+            bottom.linkTo(progressGroup.top, 24.dp)
         }
 
         constrain(progressGroup) {
-            top.linkTo(timeText.bottom, 24.dp)
-            centerHorizontallyTo(parent)
+            centerTo(parent)
         }
 
         constrain(buttonBox) {
-            top.linkTo(progressGroup.bottom, 60.dp)
-            end.linkTo(parent.end)
-            start.linkTo(parent.start)
+            centerHorizontallyTo(parent)
+            bottom.linkTo(parent.bottom, 24.dp)
         }
     }
 }
